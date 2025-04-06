@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Birthday!</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+        font-family: sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        min-height: 100vh;
+        color: #333;
+      }
+      h1 {
+        font-family: "Luckiest Guy", cursive;
+        font-size: 2.8em;
+        margin-bottom: 20px;
+        text-align: center;
+        color: #333333;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+      #cakeContainer {
+        cursor: pointer;
+        margin-bottom: 60px;
+      }
+      #cakeContainer img {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+      }
+      #voucherContainer {
+        margin-top: 20px;
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #333333;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+        text-align: center;
+      }
+      #voucherCode {
+      }
+      #voucherValue {
+        font-size: 0.8em;
+        margin-top: 5px;
+      }
+      #copyBtn {
+        margin-top: 10px;
+        padding: 10px 20px;
+        font-size: 1em;
+        background: #001f3f;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+      #confetti-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 999;
+      }
+      .confetti {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        opacity: 0.9;
+        animation: confetti-fall 3s linear forwards;
+      }
+      @keyframes confetti-fall {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100vh) rotate(720deg);
+          opacity: 0;
+        }
+      }
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 2em;
+        }
+        #voucherContainer {
+          font-size: 1.2em;
+        }
+        #copyBtn {
+          font-size: 0.9em;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Happy 26th Birthday, Alex!</h1>
+
+    <div id="cakeContainer">
+      <img
+        id="cakeSVG"
+        src="birthday-cake-svgrepo-com.svg"
+        alt="Birthday Cake"
+      />
+    </div>
+
+    <div id="voucherContainer">
+      <div id="voucherCode">DC10029V30YT84CQFGXY1A7QS</div>
+      <div id="voucherValue">(100лв)</div>
+    </div>
+    <button id="copyBtn">
+      Copy <span style="color: #f3722c; font-weight: bold">OZONE.bg</span> Code
+    </button>
+
+    <div id="confetti-container"></div>
+
+    <script>
+      const cakeContainer = document.getElementById("cakeContainer");
+      let voucherVisible = false;
+      cakeContainer.addEventListener("click", function () {
+        voucherVisible = !voucherVisible;
+        const voucherContainer = document.getElementById("voucherContainer");
+        const copyBtn = document.getElementById("copyBtn");
+        if (voucherVisible) {
+          voucherContainer.style.opacity = 1;
+          voucherContainer.style.transform = "translateY(0)";
+          copyBtn.style.opacity = 1;
+          copyBtn.style.transform = "translateY(0)";
+          launchConfetti();
+        } else {
+          voucherContainer.style.opacity = 0;
+          voucherContainer.style.transform = "translateY(20px)";
+          copyBtn.style.opacity = 0;
+          copyBtn.style.transform = "translateY(20px)";
+        }
+      });
+
+      function createConfettiPiece() {
+        const confetti = document.createElement("div");
+        confetti.classList.add("confetti");
+        const colors = [
+          "#FF8A65",
+          "#FFB74D",
+          "#4DB6AC",
+          "#81C784",
+          "#64B5F6",
+          "#BA68C8",
+          "#F06292",
+        ];
+        confetti.style.backgroundColor =
+          colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.left = Math.random() * 100 + "%";
+        const size = Math.random() * 4 + 4;
+        confetti.style.width = size + "px";
+        confetti.style.height = size + "px";
+        confetti.style.animationDuration = Math.random() * 2 + 3 + "s";
+        confetti.style.animationDelay = Math.random() * 0.5 + "s";
+        return confetti;
+      }
+
+      function launchConfetti() {
+        const container = document.getElementById("confetti-container");
+        for (let i = 0; i < 200; i++) {
+          const piece = createConfettiPiece();
+          container.appendChild(piece);
+          piece.addEventListener("animationend", () => {
+            piece.remove();
+          });
+        }
+      }
+
+      document
+        .getElementById("copyBtn")
+        .addEventListener("click", function (event) {
+          event.stopPropagation();
+          const code = document.getElementById("voucherCode").textContent;
+          navigator.clipboard.writeText(code).then(
+            () => {
+              alert("Voucher code copied!");
+            },
+            () => {
+              alert("Copy failed.");
+            }
+          );
+        });
+    </script>
+  </body>
+</html>
